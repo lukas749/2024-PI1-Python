@@ -1,0 +1,2 @@
+nastudovat for cyklus na stranke https://python.input.sk/
++ vypočítať 7 príkladov z tej stránky
