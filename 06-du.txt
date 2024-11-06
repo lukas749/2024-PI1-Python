@@ -1,0 +1,2 @@
+Vytvoriť program, ktorý vypíše moje iniciály bez diakrity, dĺžka strany jedného štvorca bude 10px
+vykreslené pomocou štvorčekov zo súboru pixel_letters.jpg
