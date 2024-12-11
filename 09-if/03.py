@@ -18,8 +18,7 @@ for i in range(pocet):
         farba = "red"
     elif (x>canvas_width/2) and (y>canvas_width/2):
         farba = "green"
-    if (x<canvas_width/4) and (y<canvas_width/4):
-        farba = "black"
+
     
     canvas.create_oval(x,y,x+a,y+a, fill= farba)
 

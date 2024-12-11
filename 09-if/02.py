@@ -24,17 +24,17 @@ for i in range (pocet):
 #    elif (x< canvas_width/2) and (y> canvas_height/2):
 #        farba = "green"
 
-if x < canvas_width /2:
-    if y< canvas_height/2:
-        farba="blue"
+    if x < canvas_width /2:
+        if y< canvas_height/2:
+            farba="blue"
+        else:
+            farba= "green"
     else:
-        farba= "green"
-else:
-    if x > canvas_width /2:
-        farba = "red"
-    else:
-        farba="yellow"
-canvas.create_oval(x,y,x+a,y+a, fill=farba)
+        if x > canvas_width /2:
+            farba = "red"
+        else:
+            farba="yellow"
+        canvas.create_oval(x,y,x+a,y+a, fill=farba)
 
 
 canvas.mainloop()
