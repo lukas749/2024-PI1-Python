@@ -1,0 +1,75 @@
+import tkinter as tk
+import random
+
+class PexesoGame:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Pexeso Game")
+        self.grid_size = 4  # 4x4 grid
+        self.card_values = list(range(1, (self.grid_size**2)//2 + 1)) * 2
+        random.shuffle(self.card_values)
+        self.buttons = {}
+        self.flipped = []  # Skladisko otočených kariet
+        self.matches = 0
+
+        self.create_grid()
+
+    def create_grid(self):
+        for i in range(self.grid_size):
+            for j in range(self.grid_size):
+                button = tk.Button(self.root, text="?", width=10, height=3, command=lambda i=i, j=j: self.flip_card(i, j))
+                button.grid(row=i, column=j)
+                self.buttons[(i, j)] = {"button": button, "value": self.card_values.pop()}
+
+    def flip_card(self, i, j):
+        button = self.buttons[(i, j)]["button"]
+        card_value = self.buttons[(i, j)]["value"]
+
+        # Ak je karta ešte neotočená a menej než 2 karty sú otočené
+        if button["text"] == "?" and len(self.flipped) < 2:
+            button.config(text=str(card_value))
+            self.flipped.append((i, j, card_value))  # Pridáme otočenú kartu do zoznamu
+
+            # Ak sú otočené dve karty, skontrolujeme, či sa zhodujú
+            if len(self.flipped) == 2:
+                self.check_match()
+
+        # Ak sú už dve otočené karty, resetujeme ich, ak hráč klikne na ďalšiu kartu
+        elif len(self.flipped) == 2:
+            # Ak je karta ešte neotočená, resetujeme obe otočené karty
+            self.reset_flipped()
+            self.flip_card(i, j)  # Po resetovaní kliknutím otočíme novú kartu
+
+    def check_match(self):
+        # Ak sa karty zhodujú
+        if self.flipped[0][2] == self.flipped[1][2]:
+            self.matches += 1
+            if self.matches == (self.grid_size**2) // 2:
+                self.show_win_message()
+            # Ak sa karty zhodujú, neresetujeme ich, zostanú odkryté
+            self.flipped = []  # Resetujeme flipped len po nájdení páru, aby zostali odkryté
+        else:
+            # Ak sa karty nezhodujú, po chvíli ich skryjeme
+            self.root.after(500, self.hide_cards)
+
+    def hide_cards(self):
+        # Skryjeme text na karách, ktoré sa nezhodovali
+        for (i, j, _) in self.flipped:
+            self.buttons[(i, j)]["button"].config(text="?")
+        # Po skrytí kariet resetujeme výber
+        self.flipped = []
+
+    def reset_flipped(self):
+        # Ak sú otočené dve karty, resetujeme ich, keď hráč klikne na inú
+        for (i, j, _) in self.flipped:
+            self.buttons[(i, j)]["button"].config(text="?")
+        self.flipped = []
+
+    def show_win_message(self):
+        win_message = tk.Label(self.root, text="You win!", font=('Helvetica', 16), fg="green")
+        win_message.grid(row=self.grid_size, column=0, columnspan=self.grid_size)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    game = PexesoGame(root)
+    root.mainloop()
